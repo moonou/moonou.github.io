@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Moonou Blog</title>
+  <meta name="google-site-verification" content="l0k-tQaadQ7Go5rROHI8KtNeYnV8NKAJga0-VYUhIbE" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_651027_p8lxvkxkrbb.css">
+  <link href="https://fonts.googleapis.com/css?family=Rubik|Source+Code+Pro|Noto+Serif+SC&display=swap" rel="stylesheet">
+<meta name="generator" content="Hexo 4.1.1"></head>
+
+<body>
+  <div>
+    <div class="home">
+  <div class="container">
+    <div class="avatar">
+      <img src="/images/avatar.jpeg" alt="">
+    </div>
+    <div class="name">
+      <p>Moonou</p>
+    </div>
+    <div class="urls">
+      <div class="item">
+        <a href="/archives">博客</a>
+      </div>
+      
+      <div class="item">
+        <a href="http://github.com/moonou" target="_blank" rel="noopener">Github</a>
+      </div>
+      
+      <div class="item">
+        <a href="mailto://moonoulong@gmail.com">Gmail</a>
+      </div>
+      
+    </div>
+  </div>
+  <div class="background">
+    <canvas id="lines"></canvas>
+  </div>
+</div>
+
+<div class="doodle-background">
+  <css-doodle>
+    :doodle {
+      @grid: 8x2;
+      @size: 100vmax;
+    }
+    transform: rotate(@r(180)deg);
+    :after {
+      content: \@hex(@pick(58919,58880,58957,59117,58987,58900,58932,58948,58995,58941));
+      font-size: @r(2em, 7em);
+      color: hsla(@r(360), 70%, 68%, @r(0.5,1));
+      font-family: "iconfont" !important;
+      font-style: normal;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    @col(1) {
+      @place-cell: @r(0vw, 20vw) @r(0%, 100%);
+    }
+    @col(2) {
+      @place-cell: @r(80vw, 100vw) @r(0%, 100%);
+    }
+  </css-doodle>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/paper.js/0.11.8/paper-full.min.js"></script>
+<!-- 
+<script src="/script/draw.js"></script>
+ -->
+
+  </div>
+  
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.11/lodash.min.js"></script>
+  <script src="/script/navs.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/css-doodle/0.4.9/css-doodle.min.js"></script>  
+  
+  
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?22665402e8fbc52fef714cbfbfbec3e0";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+    </script>
+  
+</body>
+</html>

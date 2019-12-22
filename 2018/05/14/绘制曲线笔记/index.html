@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>绘制曲线笔记 | Moonou Blog</title>
+  <meta name="google-site-verification" content="l0k-tQaadQ7Go5rROHI8KtNeYnV8NKAJga0-VYUhIbE" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_651027_p8lxvkxkrbb.css">
+  <link href="https://fonts.googleapis.com/css?family=Rubik|Source+Code+Pro|Noto+Serif+SC&display=swap" rel="stylesheet">
+<meta name="generator" content="Hexo 4.1.1"></head>
+
+<body>
+  <div>
+    
+<div class="fixed_head">
+  <div class="container">
+    <div class="title">
+        绘制曲线笔记
+    </div>
+    <div class="controls">
+      <div class="backhome item">
+        <a href="/archives">
+          <i class="iconfont icon-home"></i>
+        </a>
+      </div>
+      <div class="toc_switch item">
+        <i class="iconfont icon-menu_learn"></i>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="page_container">
+  <div class="post_page">
+    <div class="post_container">
+      <div class="article_title">绘制曲线笔记</div>
+      <div class="info">
+        <div class="date">
+          <i class="iconfont icon-calendar"></i>
+          <span>2018-05-14</span>
+        </div>
+        <div class="category">
+          <i class="iconfont icon-iconset0171"></i>
+          
+            <span><a href="/categories/%E7%8E%A9%E5%85%B7/">玩具</a></span>
+          
+        </div>
+      </div>
+      <div class="tags">
+        
+          <div class="item">
+            <a href="/tags/%E7%AE%97%E6%B3%95/">算法</a>
+          </div>
+        
+          <div class="item">
+            <a href="/tags/%E5%9B%BE%E5%BD%A2/">图形</a>
+          </div>
+        
+      </div>
+      <article class="content">
+        <p>贝塞尔曲线就是可以通过控制点来完成对线条的扭曲，在平面中，已知两个点的最短距离为直线，在这两个点的基础上引入一个控制点来控制直线的弯曲。</p>
+<p>本文远行环境为HTML5中的Canvas，使用的方法来自<code>CanvasRenderingContext2D</code>。</p>
+<a id="more"></a>
+<p>通过两个点可以绘制一条直线</p>
+<iframe scrolling="no" width="100%" height="300" src="https://jsfiddle.net/moonou/bscd5bhd/embedded/js,html,result/light" frameborder="0" loading="lazy" allowfullscreen></iframe>
+
+<p>但是如果要绘制一条曲线的话，就要使用它提供的绘制贝塞尔曲线接口<code>bezierCurveTo</code>（三次贝塞尔曲线）或<code>quadraticCurveTo</code>（二次贝塞尔曲线）。</p>
+<h1 id="关于贝塞尔曲线"><a href="#关于贝塞尔曲线" class="headerlink" title="关于贝塞尔曲线"></a>关于贝塞尔曲线</h1><p>在数学的数值分析领域中，贝济埃曲线（英语：Bézier curve，亦作“贝塞尔”）是计算机图形学中相当重要的参数曲线。更高维度的广泛化贝济埃曲线就称作贝济埃曲面，其中贝济埃三角是一种特殊的实例。</p>
+<h2 id="二次贝塞尔曲线"><a href="#二次贝塞尔曲线" class="headerlink" title="二次贝塞尔曲线"></a>二次贝塞尔曲线</h2><p>引入一个控制点生成的曲线叫二次贝塞尔曲线，在上面的例子中有两个点<code>P0(0,0) P1(200,200)</code>，接下来我们引入点<code>P2(0, 200)</code>作为控制点，<br>相应的改变方法为<code>quadraticCurveTo</code>。</p>
+<iframe scrolling="no" width="100%" height="300" src="https://jsfiddle.net/moonou/bscd5bhd/4/embedded/js,html,result/light" frameborder="0" loading="lazy" allowfullscreen></iframe>
+<p>可以看到直线发生了弯曲。</p>
+<h2 id="三次贝塞尔曲线"><a href="#三次贝塞尔曲线" class="headerlink" title="三次贝塞尔曲线"></a>三次贝塞尔曲线</h2><p>接下来再引入一个点<code>P3(150,150)</code>，将方法改为<code>bezierCurveTo</code></p>
+<iframe scrolling="no" width="100%" height="300" src="https://jsfiddle.net/moonou/bscd5bhd/5/embedded/js,html,result/light" frameborder="0" loading="lazy" allowfullscreen></iframe>
+<p>可以看到曲线再次发生了变化。</p>
+<h1 id="平滑曲线"><a href="#平滑曲线" class="headerlink" title="平滑曲线"></a>平滑曲线</h1><p>很多场景下，需要在给定若干个点中绘制一条线，使这条线穿过给出的点，但是如果直接穿过的话线条会很生硬，那么需要一种处理方式，结合上面的贝塞尔曲线知识，可以让直线变成曲线。但是这样会存在一个问题，就是如何去确定贝塞尔曲线的控制点，才能够让曲线变得平滑。这是百度文库的一篇文章<a href="https://wenku.baidu.com/view/c790f8d46bec0975f565e211.html" target="_blank" rel="noopener">贝塞尔曲线控制点确定的方法_百度文库</a>，里面介绍了如何得到控制点，使得曲线平滑。</p>
+<p><img src="//odujw1uur.qnssl.com/C1773972-488E-432B-87AF-CB06F5706050.png" alt="C1773972-488E-432B-87AF-CB06F5706050"></p>
+<p><img src="//odujw1uur.qnssl.com/AAC6A0D3-AB5A-415D-981C-8026E71D48D9.png" alt="AAC6A0D3-AB5A-415D-981C-8026E71D48D9"></p>
+<p>这是两个控制点的计算公式，A和B分别对应两个点。但是需要注意的是起始点和结束点的控制点无法通过上面的公式推导。这两个点的坐标需要通过下面的公式进行计算。</p>
+<p><img src="//odujw1uur.qnssl.com/D6C7E690-33B9-4292-8492-C28EB7BD9B17.png" alt="D6C7E690-33B9-4292-8492-C28EB7BD9B17"></p>
+<p><img src="http://odujw1uur.qnssl.com/5B7407F6-2820-4FD3-B4BF-A572D44DAFAC.png" alt="5B7407F6-2820-4FD3-B4BF-A572D44DAFAC"></p>
+<p>其中B 0点和A n-1点依然根据上面的公式求得。<br>根据公式实现了如下算法</p>
+<iframe scrolling="no" width="100%" height="300" src="https://jsfiddle.net/moonou/bscd5bhd/6/embedded/js,html,result/light" frameborder="0" loading="lazy" allowfullscreen></iframe>
+<p>可以得到一条平滑的曲线，当然这类算法还有很多，可以Google相关文章。</p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="https://github.com/Aaaaaaaty/Blog/issues/31" target="_blank" rel="noopener">基于canvas使用贝塞尔曲线平滑拟合折线段 · Issue #31 · Aaaaaaaty/blog · GitHub</a><br><a href="https://wenku.baidu.com/view/c790f8d46bec0975f565e211.html" target="_blank" rel="noopener">贝塞尔曲线控制点确定的方法_百度文库</a></p>
+
+      </article>
+    </div>
+    <div class="toc_container hidden">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#关于贝塞尔曲线"><span class="toc-number">1.</span> <span class="toc-text">关于贝塞尔曲线</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#二次贝塞尔曲线"><span class="toc-number">1.1.</span> <span class="toc-text">二次贝塞尔曲线</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#三次贝塞尔曲线"><span class="toc-number">1.2.</span> <span class="toc-text">三次贝塞尔曲线</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#平滑曲线"><span class="toc-number">2.</span> <span class="toc-text">平滑曲线</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考"><span class="toc-number">3.</span> <span class="toc-text">参考</span></a></li></ol>
+    </div>
+  </div>
+  
+  
+  <div id="disqus_thread"></div>
+  <script>
+
+  /**
+  *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+  *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+  /*
+  var disqus_config = function () {
+  this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+  this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+  };
+  */
+  (function() { // DON'T EDIT BELOW THIS LINE
+  var d = document, s = d.createElement('script');
+  s.src = 'https://blog-yvhcy5cqnn.disqus.com/embed.js';
+  s.setAttribute('data-timestamp', +new Date());
+  (d.head || d.body).appendChild(s);
+  })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+  
+</div>
+
+  </div>
+  
+  <div class="copyright">
+      Power by <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a>
+  </div>
+  
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.11/lodash.min.js"></script>
+  <script src="/script/navs.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/css-doodle/0.4.9/css-doodle.min.js"></script>  
+  
+  <script src="/script/post.js"></script>
+  
+  
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?22665402e8fbc52fef714cbfbfbec3e0";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+    </script>
+  
+</body>
+</html>

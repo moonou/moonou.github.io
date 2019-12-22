@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>快速了解React-Hooks | Moonou Blog</title>
+  <meta name="google-site-verification" content="l0k-tQaadQ7Go5rROHI8KtNeYnV8NKAJga0-VYUhIbE" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_651027_p8lxvkxkrbb.css">
+  <link href="https://fonts.googleapis.com/css?family=Rubik|Source+Code+Pro|Noto+Serif+SC&display=swap" rel="stylesheet">
+<meta name="generator" content="Hexo 4.1.1"></head>
+
+<body>
+  <div>
+    
+<div class="fixed_head">
+  <div class="container">
+    <div class="title">
+        快速了解React-Hooks
+    </div>
+    <div class="controls">
+      <div class="backhome item">
+        <a href="/archives">
+          <i class="iconfont icon-home"></i>
+        </a>
+      </div>
+      <div class="toc_switch item">
+        <i class="iconfont icon-menu_learn"></i>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="page_container">
+  <div class="post_page">
+    <div class="post_container">
+      <div class="article_title">快速了解React-Hooks</div>
+      <div class="info">
+        <div class="date">
+          <i class="iconfont icon-calendar"></i>
+          <span>2018-10-28</span>
+        </div>
+        <div class="category">
+          <i class="iconfont icon-iconset0171"></i>
+          
+            <span><a href="/categories/React/">React</a></span>
+          
+        </div>
+      </div>
+      <div class="tags">
+        
+          <div class="item">
+            <a href="/tags/%E8%A7%84%E8%8C%83/">规范</a>
+          </div>
+        
+          <div class="item">
+            <a href="/tags/%E5%89%8D%E7%AB%AF/">前端</a>
+          </div>
+        
+      </div>
+      <article class="content">
+        <h1 id="Presentational-and-Container-Components"><a href="#Presentational-and-Container-Components" class="headerlink" title="Presentational and Container Components"></a>Presentational and Container Components</h1><p>react团队成员之一的Dan Abramov在medium上写过一篇文章 <a href="https://medium.com/@dan_abramov/smart-and-dumb-components-7ca2f9a7c7d0" target="_blank" rel="noopener">Presentational and Container Components</a>，他在文中将组件分为两类，分别是<code>Presentational</code>和<code>Container</code>。<code>Presentational</code>是展示类组件，比如说<em>Page</em>,<em>Sidebar</em>,<em>Story</em>,<em>List<em>。<code>Container</code>组件是功能类组件，比如</em>UserPage</em>, <em>FollowersSidebar</em>, <em>StoryContainer</em>, <em>FollowedUserList</em>。</p>
+<p>它们是React组件的两种设计模式，和组件本身是class component还是function component关系不大。</p>
+<a id="more"></a>
+<h1 id="Hooks-出现的动机"><a href="#Hooks-出现的动机" class="headerlink" title="Hooks 出现的动机"></a>Hooks 出现的动机</h1><h2 id="便于复用组件中的逻辑"><a href="#便于复用组件中的逻辑" class="headerlink" title="便于复用组件中的逻辑"></a>便于复用组件中的逻辑</h2><p>组件中逻辑的复用，解决render props和hoc所做的事，抽离它们中的逻辑。hoc组件太多会导致标签结构混乱复杂，大多数情况下一个Container Component外面会包裹很多Presentational Component，通过Hooks，你可以从组件中抽离状态逻辑，让它们变得可以单独测试和重复使用，Hooks可以让你复用状态逻辑，而不用去变更组件的层级关系，这使得与其他组件共享Hooks变得容易，甚至可以编写社区共用的Hooks。</p>
+<h2 id="组件太复杂而变得难以理解"><a href="#组件太复杂而变得难以理解" class="headerlink" title="组件太复杂而变得难以理解"></a>组件太复杂而变得难以理解</h2><p>组件的生命周期中经常会混入很多不相关的逻辑，比如在<code>componentDidMount</code>和<code>componentDidUpdate</code>中会进行数据的请求，但是在<code>componentDidMount</code>中我们可能还会进行一些事件的监听，在<code>componentWillUnmount</code>中会清理这些事件，这就使得不相关逻辑的代码混在一起，而逻辑相关的代码会被拆分在两个方法里面，这会使得维护变得困难，大多数的组件不能再次拆分成更小的组件，因为逻辑遍布整个文件。很多人会选择引入一个单独的状态管理工具，但是这又将会引入一大部分抽象，并且将在各个文件中切换。</p>
+<h2 id="JavaScript中的class使得学习React变得困难"><a href="#JavaScript中的class使得学习React变得困难" class="headerlink" title="JavaScript中的class使得学习React变得困难"></a>JavaScript中的class使得学习React变得困难</h2><p>为了使用class取编写组件需要编写很多无意义的代码，class组件中需要去考虑this问题，在React的开发人员中，关于class组件和function组件的讨论也存在着巨大的分歧。而且对于Prepack这种提前优化工具，class变得不那么容易去优化，React团队希望能够提供一种方式，让这些逻辑代码变得可以优化。React团队建议在设计组件的时候能够向function组件靠拢，Hooks提供了能够在function组件中去编写生命周期时的逻辑，而不需要去理解复杂的响应原理。</p>
+<blockquote>
+<p>目前React团队没有将class组件移除的计划</p>
+</blockquote>
+<h1 id="React-Hooks简单使用"><a href="#React-Hooks简单使用" class="headerlink" title="React Hooks简单使用"></a>React Hooks简单使用</h1><p>React Hooks是React提交的一系列函数，他们提供在function组件中hook state和生命周期的特性，它们不能在class组件中被使用。</p>
+<h2 id="State-Hook"><a href="#State-Hook" class="headerlink" title="State Hook"></a>State Hook</h2><p>例子：</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; useState &#125; <span class="keyword">from</span> <span class="string">'react'</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Example</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="comment">// Declare a new state variable, which we'll call "count"</span></span><br><span class="line">  <span class="keyword">const</span> [count, setCount] = useState(<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;p&gt;You clicked &#123;count&#125; times&lt;<span class="regexp">/p&gt;</span></span><br><span class="line"><span class="regexp">      &lt;button onClick=&#123;() =&gt; setCount(count + 1)&#125;&gt;</span></span><br><span class="line"><span class="regexp">        Click me</span></span><br><span class="line"><span class="regexp">      &lt;/</span>button&gt;</span><br><span class="line">    &lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">  );</span></span><br><span class="line"><span class="regexp">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>useState就是一个React Hooks，这个方法接收一个值，并返回一个数组，通过JavaScript的<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment#Array_destructuring" target="_blank" rel="noopener">Array destructuring</a>特性，可以将返回的值赋给变量。<br>useState会返回两个值，第一个是state，第二个是更新该state的方法，类似<code>setState</code>。<br>一个function组件中可以使用多次<code>useState</code></p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">ExampleWithManyStates</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="comment">// Declare multiple state variables!</span></span><br><span class="line">  <span class="keyword">const</span> [age, setAge] = useState(<span class="number">42</span>);</span><br><span class="line">  <span class="keyword">const</span> [fruit, setFruit] = useState(<span class="string">'banana'</span>);</span><br><span class="line">  <span class="keyword">const</span> [todos, setTodos] = useState([&#123; <span class="attr">text</span>: <span class="string">'Learn Hooks'</span> &#125;]);</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Effect-Hook"><a href="#Effect-Hook" class="headerlink" title="Effect Hook"></a>Effect Hook</h2><p>例子:</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; useState, useEffect &#125; <span class="keyword">from</span> <span class="string">'react'</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Example</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> [count, setCount] = useState(<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Similar to componentDidMount and componentDidUpdate:</span></span><br><span class="line">  useEffect(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// Update the document title using the browser API</span></span><br><span class="line">    <span class="built_in">document</span>.title = <span class="string">`You clicked <span class="subst">$&#123;count&#125;</span> times`</span>;</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;p&gt;You clicked &#123;count&#125; times&lt;<span class="regexp">/p&gt;</span></span><br><span class="line"><span class="regexp">      &lt;button onClick=&#123;() =&gt; setCount(count + 1)&#125;&gt;</span></span><br><span class="line"><span class="regexp">        Click me</span></span><br><span class="line"><span class="regexp">      &lt;/</span>button&gt;</span><br><span class="line">    &lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">  );</span></span><br><span class="line"><span class="regexp">&#125;</span></span><br></pre></td></tr></table></figure>
+<p>React团队提出了一种叫“side effects”的操作，比如fetch data、subscriptions、或者手动去变更DOM，因为它们会影响其他组件，并且在渲染中无法进行。<code>useEffect</code> hook类似于类组件中<code>componentDidMount</code>、<code>componentDidUpdate</code>、<code>componentWillUnmount</code>的统一。上面的例子中将会在Effect中去改变title的值。<br>在使用<code>useEffect</code>时，只需要告诉React在更新DOM之后需要进行的“effect”，通常运行这些“effect”会在渲染之后（包括第一次渲染）。<br><code>useEffect</code>可以通过返回一个函数来进行清理操作，这些操作会在组件unmounts时运行，或者因为后续渲染重新运行“effect”之前。下面的例子在effect中subscribe好友的状态，并且通过返回一个函数unsubscribe状态。</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; useState, useEffect &#125; <span class="keyword">from</span> <span class="string">'react'</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">FriendStatus</span>(<span class="params">props</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> [isOnline, setIsOnline] = useState(<span class="literal">null</span>);</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">handleStatusChange</span>(<span class="params">status</span>) </span>&#123;</span><br><span class="line">    setIsOnline(status.isOnline);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  useEffect(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    ChatAPI.subscribeToFriendStatus(props.friend.id, handleStatusChange);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">      ChatAPI.unsubscribeFromFriendStatus(props.friend.id, handleStatusChange);</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (isOnline === <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">'Loading...'</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> isOnline ? <span class="string">'Online'</span> : <span class="string">'Offline'</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>跟<code>useState</code>一样，在function组件中也可以多次使用<code>useEffect</code></p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">FriendStatusWithCounter</span>(<span class="params">props</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> [count, setCount] = useState(<span class="number">0</span>);</span><br><span class="line">  useEffect(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">document</span>.title = <span class="string">`You clicked <span class="subst">$&#123;count&#125;</span> times`</span>;</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> [isOnline, setIsOnline] = useState(<span class="literal">null</span>);</span><br><span class="line">  useEffect(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    ChatAPI.subscribeToFriendStatus(props.friend.id, handleStatusChange);</span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">      ChatAPI.unsubscribeFromFriendStatus(props.friend.id, handleStatusChange);</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">handleStatusChange</span>(<span class="params">status</span>) </span>&#123;</span><br><span class="line">    setIsOnline(status.isOnline);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// ...</span></span><br></pre></td></tr></table></figure>
+<p>这样可以很方便的根据逻辑代码去组织逻辑，而不是通过生命周期去组织代码。</p>
+<h2 id="Hooks的使用规则"><a href="#Hooks的使用规则" class="headerlink" title="Hooks的使用规则"></a>Hooks的使用规则</h2><p>Hooks是JavaScript函数，但是在使用它们时需要强制遵循两条规则规则</p>
+<ul>
+<li>调用Hooks必须在顶层函数，不能在循环、条件和嵌套函数中调用</li>
+<li>调用Hooks必须在function组件中，不能在传统的JavaScript方法中调用(也可以在自己定义的Hooks中调用)<br>React团队提供了相关的eslint插件，可以在eslint中检查上面的规则。<a href="https://www.npmjs.com/package/eslint-plugin-react-hooks" target="_blank" rel="noopener">linter plugin</a></li>
+</ul>
+<h2 id="自定义Hook"><a href="#自定义Hook" class="headerlink" title="自定义Hook"></a>自定义Hook</h2><p>有时我们想在不同的组件中执行相同的逻辑，比如上面的subscribe好友状态，下面的例子中抽离了相关的逻辑，定义了一个<code>useFriendStatus</code>的方法</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; useState, useEffect &#125; <span class="keyword">from</span> <span class="string">'react'</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">useFriendStatus</span>(<span class="params">friendID</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> [isOnline, setIsOnline] = useState(<span class="literal">null</span>);</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">handleStatusChange</span>(<span class="params">status</span>) </span>&#123;</span><br><span class="line">    setIsOnline(status.isOnline);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  useEffect(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    ChatAPI.subscribeToFriendStatus(friendID, handleStatusChange);</span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">      ChatAPI.unsubscribeFromFriendStatus(friendID, handleStatusChange);</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> isOnline;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>它接收一个friendID作为参数，并且返回好友在线的状态，现在可以在两个组件中使用它</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">FriendStatus</span>(<span class="params">props</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> isOnline = useFriendStatus(props.friend.id);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (isOnline === <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">'Loading...'</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> isOnline ? <span class="string">'Online'</span> : <span class="string">'Offline'</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">FriendListItem</span>(<span class="params">props</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> isOnline = useFriendStatus(props.friend.id);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    &lt;li style=&#123;&#123; <span class="attr">color</span>: isOnline ? <span class="string">'green'</span> : <span class="string">'black'</span> &#125;&#125;&gt;</span><br><span class="line">      &#123;props.friend.name&#125;</span><br><span class="line">    &lt;<span class="regexp">/li&gt;</span></span><br><span class="line"><span class="regexp">  );</span></span><br><span class="line"><span class="regexp">&#125;</span></span><br></pre></td></tr></table></figure>
+<p>这些组件的状态是完全独立的，钩子是重用有状态逻辑的一种方式，而不是状态本身。事实上，每次调用Hook都有一个完全隔离的状态，所以你甚至可以在一个组件中使用相同的自定义Hook两次。<br>如果一个函数需要以<code>use</code>开头，在React中回叫它自定义Hooks，在lint工具中，这会是一个检查的条件。</p>
+<h2 id="其他Hook"><a href="#其他Hook" class="headerlink" title="其他Hook"></a>其他Hook</h2><p>有一些Hook不经常会用到，但是很有用，比如<code>useContext</code>，它可以让你subscribe React context</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Example</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> locale = useContext(LocaleContext);</span><br><span class="line">  <span class="keyword">const</span> theme = useContext(ThemeContext);</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>useReducer</code>可以让你在复杂的组件中使用Reducer的方式管理state</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Todos</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> [todos, dispatch] = useReducer(todosReducer);</span><br><span class="line">  <span class="comment">// ...</span></span><br></pre></td></tr></table></figure>
+<p>更多的Hook可以阅读React提供的API文档 <a href="https://reactjs.org/docs/hooks-reference.html" target="_blank" rel="noopener">Hooks API Reference</a></p>
+<h1 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h1><ol>
+<li><em><a href="https://reactjs.org/docs/hooks-intro.html" target="_blank" rel="noopener">Introducing Hooks</a></em></li>
+</ol>
+
+      </article>
+    </div>
+    <div class="toc_container hidden">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Presentational-and-Container-Components"><span class="toc-number">1.</span> <span class="toc-text">Presentational and Container Components</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Hooks-出现的动机"><span class="toc-number">2.</span> <span class="toc-text">Hooks 出现的动机</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#便于复用组件中的逻辑"><span class="toc-number">2.1.</span> <span class="toc-text">便于复用组件中的逻辑</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#组件太复杂而变得难以理解"><span class="toc-number">2.2.</span> <span class="toc-text">组件太复杂而变得难以理解</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#JavaScript中的class使得学习React变得困难"><span class="toc-number">2.3.</span> <span class="toc-text">JavaScript中的class使得学习React变得困难</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#React-Hooks简单使用"><span class="toc-number">3.</span> <span class="toc-text">React Hooks简单使用</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#State-Hook"><span class="toc-number">3.1.</span> <span class="toc-text">State Hook</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Effect-Hook"><span class="toc-number">3.2.</span> <span class="toc-text">Effect Hook</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Hooks的使用规则"><span class="toc-number">3.3.</span> <span class="toc-text">Hooks的使用规则</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#自定义Hook"><span class="toc-number">3.4.</span> <span class="toc-text">自定义Hook</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#其他Hook"><span class="toc-number">3.5.</span> <span class="toc-text">其他Hook</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#引用"><span class="toc-number">4.</span> <span class="toc-text">引用</span></a></li></ol>
+    </div>
+  </div>
+  
+  
+  <div id="disqus_thread"></div>
+  <script>
+
+  /**
+  *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+  *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+  /*
+  var disqus_config = function () {
+  this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+  this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+  };
+  */
+  (function() { // DON'T EDIT BELOW THIS LINE
+  var d = document, s = d.createElement('script');
+  s.src = 'https://blog-yvhcy5cqnn.disqus.com/embed.js';
+  s.setAttribute('data-timestamp', +new Date());
+  (d.head || d.body).appendChild(s);
+  })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+  
+</div>
+
+  </div>
+  
+  <div class="copyright">
+      Power by <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a>
+  </div>
+  
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.11/lodash.min.js"></script>
+  <script src="/script/navs.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/css-doodle/0.4.9/css-doodle.min.js"></script>  
+  
+  <script src="/script/post.js"></script>
+  
+  
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?22665402e8fbc52fef714cbfbfbec3e0";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+    </script>
+  
+</body>
+</html>

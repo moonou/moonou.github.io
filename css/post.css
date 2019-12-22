@@ -1,0 +1,231 @@
+.fixed_head {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  box-shadow: 0 2px 10px #ddd;
+  background: #fff;
+  z-index: 1;
+  visibility: hidden;
+  opacity: 0;
+  transition: all 0.3s ease-out;
+}
+.fixed_head.show {
+  visibility: visible;
+  opacity: 1;
+}
+.fixed_head.show .title {
+  animation: title 1s ease;
+}
+.fixed_head .container {
+  height: 80px;
+  width: 70%;
+  max-width: 1440px;
+  min-width: 760px;
+  margin: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.fixed_head .container .title {
+  font-size: 20px;
+  flex: 1;
+  color: #333;
+}
+.fixed_head .container .controls {
+  display: flex;
+}
+.fixed_head .container .controls .item {
+  margin-left: 20px;
+  cursor: pointer;
+}
+.fixed_head .container .controls a {
+  text-decoration: none;
+}
+.fixed_head .container .controls i {
+  color: #666;
+  font-size: 25px;
+}
+.post_page {
+  margin-top: 100px;
+  font-size: 0;
+}
+.post_page .post_container {
+  display: inline-block;
+  vertical-align: top;
+  width: 100%;
+}
+.post_page .post_container .article_title {
+  font-size: 30px;
+  color: #414141;
+}
+.post_page .post_container .info {
+  margin: 10px 0;
+}
+.post_page .post_container .info .category {
+  margin-left: 20px;
+}
+.post_page .post_container .info .category a {
+  text-decoration: none;
+  color: #939393;
+}
+.post_page .post_container .info .category a:hover {
+  text-decoration: underline;
+}
+.post_page .post_container .info .date,
+.post_page .post_container .info .category {
+  display: inline-block;
+  vertical-align: middle;
+  font-size: 12px;
+}
+.post_page .post_container .info .date i,
+.post_page .post_container .info .category i,
+.post_page .post_container .info .date span,
+.post_page .post_container .info .category span {
+  display: inline-block;
+  vertical-align: middle;
+  color: #939393;
+}
+.post_page .post_container .tags {
+  font-size: 0;
+}
+.post_page .post_container .tags .item {
+  display: inline-block;
+}
+.post_page .post_container .tags .item a {
+  display: flex;
+  background-color: #d8d8d8;
+  padding: 0px 30px;
+  height: 25px;
+  font-size: 12px;
+  vertical-align: top;
+  align-items: center;
+  border-radius: 4px;
+  margin-right: 10px;
+  text-decoration: none;
+  color: #fff;
+  transition: all 0.3s ease-out;
+}
+.post_page .post_container .tags .item a:hover {
+  background-color: #333;
+}
+.post_page .post_container .content {
+  margin-top: 50px;
+  color: #454545;
+  font-size: 16px;
+  line-height: 2;
+}
+.post_page .post_container .content a {
+  color: #818181;
+}
+.post_page .post_container .content a:hover {
+  color: #333;
+}
+.post_page .post_container .content img {
+  max-width: 100%;
+}
+.post_page .post_container .content blockquote {
+  margin: 0;
+  padding: 20px 20px;
+  position: relative;
+  display: block;
+  margin-bottom: 20px;
+  color: #333;
+  font-style: italic;
+}
+.post_page .post_container .content blockquote:after {
+  content: "\e66c";
+  font-family: "iconfont" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  position: absolute;
+  font-size: 30px;
+  top: 0;
+  left: 0;
+  color: #ddd;
+}
+.post_page .toc_container {
+  width: 20%;
+  padding-left: 40px;
+  box-sizing: border-box;
+  top: 80px;
+  display: inline-block;
+  vertical-align: top;
+  overflow: auto;
+  height: calc(100vh - 80px);
+  position: fixed;
+  right: 0;
+  background-color: rgba(255,255,255,0.8);
+  backdrop-filter: blur(10px);
+  transform: translateX(0%);
+  transition: all 0.6s ease-out;
+}
+.post_page .toc_container.hidden {
+  transform: translateX(100%);
+}
+.post_page .toc_container ol {
+  list-style: none;
+}
+.post_page .toc_container ol li {
+  margin-top: 10px;
+}
+.post_page .toc_container a {
+  text-decoration: none;
+  font-size: 14px;
+  color: #747474;
+}
+.post_page .toc_container a:hover {
+  text-decoration: underline;
+}
+.post_page .toc_container .toc {
+  margin: 0;
+  padding: 0;
+}
+.post_page .toc_container .toc a.active {
+  color: #f00;
+}
+.post_page .toc_container .header {
+  display: flex;
+  align-items: center;
+}
+.post_page .toc_container .header .title {
+  color: #606060;
+  font-size: 25px;
+  margin-right: 10px;
+}
+.post_page .toc_container .header .backhome i {
+  color: #606060;
+  font-size: 20px;
+}
+@-moz-keyframes title {
+  0% {
+    transform: translateY(100%);
+  }
+  100% {
+    transform: translateY(0%);
+  }
+}
+@-webkit-keyframes title {
+  0% {
+    transform: translateY(100%);
+  }
+  100% {
+    transform: translateY(0%);
+  }
+}
+@-o-keyframes title {
+  0% {
+    transform: translateY(100%);
+  }
+  100% {
+    transform: translateY(0%);
+  }
+}
+@keyframes title {
+  0% {
+    transform: translateY(100%);
+  }
+  100% {
+    transform: translateY(0%);
+  }
+}

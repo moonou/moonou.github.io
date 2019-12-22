@@ -1,0 +1,42 @@
+.friend_links {
+  margin-top: 100px;
+}
+.friend_links a {
+  text-decoration: none;
+}
+.friend_links .item {
+  display: inline-block;
+  vertical-align: middle;
+  border: solid 1px #ddd;
+  border-radius: 4px;
+  padding: 10px 20px;
+  margin-right: 30px;
+  margin-bottom: 20px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+.friend_links .item:hover {
+  background-color: #ddd;
+}
+.friend_links .item:hover .name {
+  color: #333;
+}
+.friend_links .item .avatar,
+.friend_links .item .name {
+  display: inline-block;
+  vertical-align: middle;
+}
+.friend_links .item .avatar {
+  width: 50px;
+  height: 50px;
+  margin-right: 20px;
+}
+.friend_links .item .avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.friend_links .item .name {
+  transition: all 0.3s ease;
+  color: #979797;
+}

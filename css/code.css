@@ -1,0 +1,92 @@
+pre {
+  font-family: 'Source Code Pro', monospace;
+}
+code {
+  background-color: #ececec;
+  color: #3e3e3e;
+  padding: 5px 10px;
+  margin: 0 10px;
+  border-radius: 4px;
+  font-family: Arial;
+}
+figure.highlight {
+  background-color: #282c34;
+  margin: 0;
+  border-radius: 4px;
+  line-height: 2;
+  overflow: auto;
+  font-size: 16px;
+}
+figure.highlight table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+figure.highlight table .gutter {
+  background-color: #3e414a;
+  color: #ababab;
+  padding: 0 5px;
+  position: sticky;
+  left: 0;
+}
+figure.highlight table .code {
+  padding-left: 20px;
+  color: #abb2bf;
+}
+figure.highlight table .code .comment,
+figure.highlight table .code .quote {
+  color: #5c6370;
+  font-style: italic;
+}
+figure.highlight table .code .doctag,
+figure.highlight table .code .keyword,
+figure.highlight table .code .formula {
+  color: #c678dd;
+}
+figure.highlight table .code .section,
+figure.highlight table .code .name,
+figure.highlight table .code .selector-tag,
+figure.highlight table .code .deletion,
+figure.highlight table .code .subst {
+  color: #e06c75;
+}
+figure.highlight table .code .literal {
+  color: #56b6c2;
+}
+figure.highlight table .code .string,
+figure.highlight table .code .regexp,
+figure.highlight table .code .addition,
+figure.highlight table .code .attribute,
+figure.highlight table .code .meta-string {
+  color: #98c379;
+}
+figure.highlight table .code .built_in,
+figure.highlight table .code .class .title {
+  color: #e6c07b;
+}
+figure.highlight table .code .attr,
+figure.highlight table .code .variable,
+figure.highlight table .code .template-variable,
+figure.highlight table .code .type,
+figure.highlight table .code .selector-class,
+figure.highlight table .code .selector-attr,
+figure.highlight table .code .selector-pseudo,
+figure.highlight table .code .number {
+  color: #d19a66;
+}
+figure.highlight table .code .symbol,
+figure.highlight table .code .bullet,
+figure.highlight table .code .link,
+figure.highlight table .code .meta,
+figure.highlight table .code .selector-id,
+figure.highlight table .code .title {
+  color: #61aeee;
+}
+figure.highlight table .code .emphasis {
+  font-style: italic;
+}
+figure.highlight table .code .strong {
+  font-weight: bold;
+}
+figure.highlight table .code .link {
+  text-decoration: underline;
+}

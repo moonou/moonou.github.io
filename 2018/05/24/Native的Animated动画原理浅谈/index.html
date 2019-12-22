@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>React Native的Animated动画原理浅谈 | Moonou Blog</title>
+  <meta name="google-site-verification" content="l0k-tQaadQ7Go5rROHI8KtNeYnV8NKAJga0-VYUhIbE" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_651027_p8lxvkxkrbb.css">
+  <link href="https://fonts.googleapis.com/css?family=Rubik|Source+Code+Pro|Noto+Serif+SC&display=swap" rel="stylesheet">
+<meta name="generator" content="Hexo 4.1.1"></head>
+
+<body>
+  <div>
+    
+<div class="fixed_head">
+  <div class="container">
+    <div class="title">
+        React Native的Animated动画原理浅谈
+    </div>
+    <div class="controls">
+      <div class="backhome item">
+        <a href="/archives">
+          <i class="iconfont icon-home"></i>
+        </a>
+      </div>
+      <div class="toc_switch item">
+        <i class="iconfont icon-menu_learn"></i>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="page_container">
+  <div class="post_page">
+    <div class="post_container">
+      <div class="article_title">React Native的Animated动画原理浅谈</div>
+      <div class="info">
+        <div class="date">
+          <i class="iconfont icon-calendar"></i>
+          <span>2018-05-24</span>
+        </div>
+        <div class="category">
+          <i class="iconfont icon-iconset0171"></i>
+          
+            <span><a href="/categories/React-Native/">React Native</a></span>
+          
+        </div>
+      </div>
+      <div class="tags">
+        
+          <div class="item">
+            <a href="/tags/%E5%89%8D%E7%AB%AF/">前端</a>
+          </div>
+        
+      </div>
+      <article class="content">
+        <p>在React Native中创建一个动画有多种方式。</p>
+<ol>
+<li>使用<code>react-native</code>包的<code>Animated</code>组件创建动画</li>
+<li>使用<code>react-native</code>包的<code>LayoutAnimation</code>创建布局动画</li>
+<li>使用Web API标准的<code>requestAnimationFrame</code>控制动画</li>
+</ol>
+<p>以上是目前常用的几种在React Native中创建动画的方式，Animated动画可以进行nativeDriver加速，但是如果属性不支持，将会使用<code>requestAnimationFrame</code>实现计算。LayoutAnimation控制粒度不及Animated细。</p>
+<p>本文主要来说说Animated.Value及Animated.ValueXY</p>
+<a id="more"></a>
+
+<h1 id="使用Animated创建一个动画"><a href="#使用Animated创建一个动画" class="headerlink" title="使用Animated创建一个动画"></a>使用Animated创建一个动画</h1><p>先通过使用Animated创建一个动画回顾一下React Native中Animated的使用。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AnimatedPlayground</span> <span class="keyword">extends</span> <span class="title">Component</span> </span>&#123;</span><br><span class="line">  state = &#123;</span><br><span class="line">    size: <span class="keyword">new</span> Animated.Value(<span class="number">50</span>) <span class="comment">// 动画属性初始值</span></span><br><span class="line">  &#125;</span><br><span class="line">  componentDidMount () &#123;</span><br><span class="line">    Animated.timing(<span class="keyword">this</span>.state.size, &#123;</span><br><span class="line">      toValue: <span class="number">200</span> <span class="comment">// 下一阶段值</span></span><br><span class="line">    &#125;).start() <span class="comment">// 开始动画</span></span><br><span class="line">  &#125;</span><br><span class="line">  render () &#123;</span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">      &lt;Animated.View style=&#123;&#123;</span><br><span class="line">        backgroundColor: <span class="string">'#000'</span>,</span><br><span class="line">        width: <span class="keyword">this</span>.state.size, <span class="comment">// 将动画值赋给元素</span></span><br><span class="line">        height: <span class="keyword">this</span>.state.size</span><br><span class="line">      &#125;&#125;/&gt;</span><br><span class="line">    )</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>使用Animated做动画需要注意几个地方</p>
+<ol>
+<li>元素需要变化的属性值必须用<code>Animated.Value</code>或者<code>Animated.ValueXY</code>初始化。</li>
+<li>需要进行动画的元素需要转换成<code>Animated</code>的组件，Animated提供了<code>Animated.View</code>、<code>Animated.Text</code>、<code>Animated.Image</code>和<code>Animated.ScrollView</code> ，其他组件通过<code>Animated.createAnimatedComponent()</code>方法处理后即可使用Animated.Value值作为属性</li>
+<li>调用Animated的方法创建一个动画对象常用的方法有<code>Animated.decay</code>、<code>Animated.timing</code>、<code>Animated.spring</code>等</li>
+<li>调用第三步生成对象的<code>start()</code>方法即可触发动画</li>
+</ol>
+<h1 id="Animated-timing-方法"><a href="#Animated-timing-方法" class="headerlink" title="Animated.timing()方法"></a>Animated.timing()方法</h1><p>在Animated创建动画的方法中，timing是最简单易懂的一个，这里看一下timing方法内部都做了什么。</p>
+<blockquote>
+<p>注意：文中的源码基于<code>0.55.4</code>版本的react-native源码</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// react-native/Libraries/Animated/src/AnimatedImplementation.js#181</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> timing = <span class="function"><span class="keyword">function</span>(<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">  value: AnimatedValue | AnimatedValueXY,</span></span></span><br><span class="line"><span class="function"><span class="params">  config: TimingAnimationConfig,</span></span></span><br><span class="line"><span class="function"><span class="params"></span>): <span class="title">CompositeAnimation</span> </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> start = <span class="function"><span class="keyword">function</span>(<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">    animatedValue: AnimatedValue | AnimatedValueXY,</span></span></span><br><span class="line"><span class="function"><span class="params">    configuration: TimingAnimationConfig,</span></span></span><br><span class="line"><span class="function"><span class="params">    callback?: ?EndCallback,</span></span></span><br><span class="line"><span class="function"><span class="params">  </span>): <span class="title">void</span> </span>&#123;</span><br><span class="line">    callback = _combineCallbacks(callback, configuration);</span><br><span class="line">    <span class="keyword">const</span> singleValue: any = animatedValue;</span><br><span class="line">    <span class="keyword">const</span> singleConfig: any = configuration;</span><br><span class="line">    singleValue.stopTracking();</span><br><span class="line">    <span class="keyword">if</span> (configuration.toValue <span class="keyword">instanceof</span> AnimatedNode) &#123;</span><br><span class="line">      singleValue.track(</span><br><span class="line">        <span class="keyword">new</span> AnimatedTracking(</span><br><span class="line">          singleValue,</span><br><span class="line">          configuration.toValue,</span><br><span class="line">          TimingAnimation,</span><br><span class="line">          singleConfig,</span><br><span class="line">          callback,</span><br><span class="line">        ),</span><br><span class="line">      );</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      singleValue.animate(<span class="keyword">new</span> TimingAnimation(singleConfig), callback);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    maybeVectorAnim(value, config, timing) || &#123;</span><br><span class="line">      start: <span class="function"><span class="keyword">function</span>(<span class="params">callback?: ?EndCallback</span>): <span class="title">void</span> </span>&#123;</span><br><span class="line">        start(value, config, callback);</span><br><span class="line">      &#125;,</span><br><span class="line"></span><br><span class="line">      stop: <span class="function"><span class="keyword">function</span>(<span class="params"></span>): <span class="title">void</span> </span>&#123;</span><br><span class="line">        value.stopAnimation();</span><br><span class="line">      &#125;,</span><br><span class="line"></span><br><span class="line">      reset: <span class="function"><span class="keyword">function</span>(<span class="params"></span>): <span class="title">void</span> </span>&#123;</span><br><span class="line">        value.resetAnimation();</span><br><span class="line">      &#125;,</span><br><span class="line"></span><br><span class="line">      _startNativeLoop: <span class="function"><span class="keyword">function</span>(<span class="params">iterations?: number</span>): <span class="title">void</span> </span>&#123;</span><br><span class="line">        <span class="keyword">const</span> singleConfig = &#123;...config, iterations&#125;;</span><br><span class="line">        start(value, singleConfig);</span><br><span class="line">      &#125;,</span><br><span class="line"></span><br><span class="line">      _isUsingNativeDriver: <span class="function"><span class="keyword">function</span>(<span class="params"></span>): <span class="title">boolean</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> config.useNativeDriver || <span class="literal">false</span>;</span><br><span class="line">      &#125;,</span><br><span class="line">    &#125;</span><br><span class="line">  );</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>timing方法会返回一个对象，在返回前会尝试使用<code>maybeVectorAnim</code>进行坐标值的准换，如果值不是坐标值，将会返回一个对象。在上面的例子中，对timing返回的对象调用<code>start()</code>方法会开始动画，所以start方法是触发动画的关键。跟随代码可以找到最后会调用Animated.Value的<code>animate</code>方法。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// react-native/Libraries/Animated/src/nodes/AnimatedValue.js#278</span></span><br><span class="line"></span><br><span class="line">animate(animation: Animation, <span class="attr">callback</span>: ?EndCallback): <span class="keyword">void</span> &#123;</span><br><span class="line">  <span class="keyword">let</span> handle = <span class="literal">null</span>;</span><br><span class="line">  <span class="keyword">if</span> (animation.__isInteraction) &#123;</span><br><span class="line">    handle = InteractionManager.createInteractionHandle();</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">const</span> previousAnimation = <span class="keyword">this</span>._animation;</span><br><span class="line">  <span class="keyword">this</span>._animation &amp;&amp; <span class="keyword">this</span>._animation.stop();</span><br><span class="line">  <span class="keyword">this</span>._animation = animation;</span><br><span class="line">  animation.start(</span><br><span class="line">    <span class="keyword">this</span>._value,</span><br><span class="line">    value =&gt; &#123;</span><br><span class="line">      <span class="comment">// Natively driven animations will never call into that callback, therefore we can always</span></span><br><span class="line">      <span class="comment">// pass flush = true to allow the updated value to propagate to native with setNativeProps</span></span><br><span class="line">      <span class="keyword">this</span>._updateValue(value, <span class="literal">true</span> <span class="comment">/* flush */</span>);</span><br><span class="line">    &#125;,</span><br><span class="line">    result =&gt; &#123;</span><br><span class="line">      <span class="keyword">this</span>._animation = <span class="literal">null</span>;</span><br><span class="line">      <span class="keyword">if</span> (handle !== <span class="literal">null</span>) &#123;</span><br><span class="line">        InteractionManager.clearInteractionHandle(handle);</span><br><span class="line">      &#125;</span><br><span class="line">      callback &amp;&amp; callback(result);</span><br><span class="line">    &#125;,</span><br><span class="line">    previousAnimation,</span><br><span class="line">    <span class="keyword">this</span>,</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个方法通过调用传入的<code>animation.start</code>方法处理值更改，当值update时调用自身的<code>_updateValue</code>最后会调用到<code>_flush</code>，这个方法是一个关键方法，阅读以下它的实现</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// react-native/Libraries/Animated/src/nodes/AnimatedValue.js#51</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">_flush</span>(<span class="params">rootNode: AnimatedValue</span>): <span class="title">void</span> </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> animatedStyles = <span class="keyword">new</span> <span class="built_in">Set</span>();</span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">findAnimatedStyles</span>(<span class="params">node</span>) </span>&#123;</span><br><span class="line">    <span class="comment">/* $FlowFixMe(&gt;=0.68.0 site=react_native_fb) This comment suppresses an</span></span><br><span class="line"><span class="comment">     * error found when Flow v0.68 was deployed. To see the error delete this</span></span><br><span class="line"><span class="comment">     * comment and run Flow. */</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> node.update === <span class="string">'function'</span>) &#123;</span><br><span class="line">      animatedStyles.add(node);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      node.__getChildren().forEach(findAnimatedStyles);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  findAnimatedStyles(rootNode);</span><br><span class="line">  <span class="comment">/* $FlowFixMe */</span></span><br><span class="line">  animatedStyles.forEach(<span class="function"><span class="params">animatedStyle</span> =&gt;</span> animatedStyle.update());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>它会遍历所有子节点，找出带有update方法的节点，并调用他们的update方法。好了，Animated.Value的代码阅读展示到这里，接下来看看<code>createAnimatedComponent</code>这个方法主要做了什么。</p>
+<h1 id="createAnimatedComponent-高阶组件"><a href="#createAnimatedComponent-高阶组件" class="headerlink" title="createAnimatedComponent 高阶组件"></a>createAnimatedComponent 高阶组件</h1><p>打开它的源码可以看到它是一个高阶组件，它返回的组件中有一个<code>_propsAnimated</code>的变量，在<code>UNSAFE_componentWillMount</code>中调用<code>_attachProps</code>进行初始化，传入了props和一个函数<code>_animatedPropsCallback</code>，这个传入函数的作用是通过<code>setNativeProps</code>更新最终的Component。来看一下<code>AnimatedProps</code>的实现</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// react-native/Libraries/Animated/src/nodes/AnimatedProps.js</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AnimatedProps</span> <span class="keyword">extends</span> <span class="title">AnimatedNode</span> </span>&#123;</span><br><span class="line">true...</span><br><span class="line">true__attach(): <span class="keyword">void</span> &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">const</span> key <span class="keyword">in</span> <span class="keyword">this</span>._props) &#123;</span><br><span class="line">      <span class="keyword">const</span> value = <span class="keyword">this</span>._props[key];</span><br><span class="line">      <span class="keyword">if</span> (value <span class="keyword">instanceof</span> AnimatedNode) &#123;</span><br><span class="line">        value.__addChild(<span class="keyword">this</span>);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  ...</span><br><span class="line">  update(): <span class="keyword">void</span> &#123;</span><br><span class="line">    <span class="keyword">this</span>._callback();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>里面的<code>update</code>方法将会调用传入的回调，回到上面说的<code>_flush</code>方法，可以大概知道了Animated的原理了。但是这里还有一个问题就是什么时候将Value和组件关联起来的，就是为什么<code>_flush</code>能找到AnimatedProps的update方法。<br>上面代码中我贴出了<code>__attach</code>方法，改方法会在初始化的时候调用，最终会把this传入<code>value.__addChild</code>，这里的value就是通过props传入的Animated.Value。在<code>_flush</code>中会调用<code>node.__getChildren().forEach(findAnimatedStyles);</code>，它将会返回在前面添加的Child。</p>
+<p>到这里就能理解在React Native的Animated动画实现流程了。</p>
+<p>文章只是简单分析了一下部分源码，并没有完全分析，源码中还有很多优化及功能代码，比如detach、事件通知等。</p>
+
+      </article>
+    </div>
+    <div class="toc_container hidden">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#使用Animated创建一个动画"><span class="toc-number">1.</span> <span class="toc-text">使用Animated创建一个动画</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Animated-timing-方法"><span class="toc-number">2.</span> <span class="toc-text">Animated.timing()方法</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#createAnimatedComponent-高阶组件"><span class="toc-number">3.</span> <span class="toc-text">createAnimatedComponent 高阶组件</span></a></li></ol>
+    </div>
+  </div>
+  
+  
+  <div id="disqus_thread"></div>
+  <script>
+
+  /**
+  *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+  *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+  /*
+  var disqus_config = function () {
+  this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+  this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+  };
+  */
+  (function() { // DON'T EDIT BELOW THIS LINE
+  var d = document, s = d.createElement('script');
+  s.src = 'https://blog-yvhcy5cqnn.disqus.com/embed.js';
+  s.setAttribute('data-timestamp', +new Date());
+  (d.head || d.body).appendChild(s);
+  })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+  
+</div>
+
+  </div>
+  
+  <div class="copyright">
+      Power by <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a>
+  </div>
+  
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.11/lodash.min.js"></script>
+  <script src="/script/navs.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/css-doodle/0.4.9/css-doodle.min.js"></script>  
+  
+  <script src="/script/post.js"></script>
+  
+  
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?22665402e8fbc52fef714cbfbfbec3e0";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+    </script>
+  
+</body>
+</html>

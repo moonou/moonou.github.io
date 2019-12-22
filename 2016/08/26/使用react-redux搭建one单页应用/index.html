@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>使用react+redux搭建one单页应用 | Moonou Blog</title>
+  <meta name="google-site-verification" content="l0k-tQaadQ7Go5rROHI8KtNeYnV8NKAJga0-VYUhIbE" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_651027_p8lxvkxkrbb.css">
+  <link href="https://fonts.googleapis.com/css?family=Rubik|Source+Code+Pro|Noto+Serif+SC&display=swap" rel="stylesheet">
+<meta name="generator" content="Hexo 4.1.1"></head>
+
+<body>
+  <div>
+    
+<div class="fixed_head">
+  <div class="container">
+    <div class="title">
+        使用react+redux搭建one单页应用
+    </div>
+    <div class="controls">
+      <div class="backhome item">
+        <a href="/archives">
+          <i class="iconfont icon-home"></i>
+        </a>
+      </div>
+      <div class="toc_switch item">
+        <i class="iconfont icon-menu_learn"></i>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="page_container">
+  <div class="post_page">
+    <div class="post_container">
+      <div class="article_title">使用react+redux搭建one单页应用</div>
+      <div class="info">
+        <div class="date">
+          <i class="iconfont icon-calendar"></i>
+          <span>2016-08-26</span>
+        </div>
+        <div class="category">
+          <i class="iconfont icon-iconset0171"></i>
+          
+            <span><a href="/categories/React/">React</a></span>
+          
+        </div>
+      </div>
+      <div class="tags">
+        
+          <div class="item">
+            <a href="/tags/%E5%89%8D%E7%AB%AF/">前端</a>
+          </div>
+        
+          <div class="item">
+            <a href="/tags/%E5%AE%9E%E6%88%98/">实战</a>
+          </div>
+        
+      </div>
+      <article class="content">
+        <h1 id="什么是React？"><a href="#什么是React？" class="headerlink" title="什么是React？"></a>什么是React？</h1><p><img src="//odujw1uur.qnssl.com/React.png" alt="React"></p>
+<p>当今的前端正处于技术爆发期，这个阶段涌现很多优秀的编程思想以及框架，本文所介绍的react就是<br>前端的一种框架，它使用单向数据绑定以及jsx语法糖，通过它提供的特性，可以构建去区别于以前传统<br>型的网页。</p>
+<a id="more"></a>
+<h1 id="什么是Redux？"><a href="#什么是Redux？" class="headerlink" title="什么是Redux？"></a>什么是Redux？</h1><p><img src="//odujw1uur.qnssl.com/redux.png" alt="redux"></p>
+<p>单页模式区别于传统模式开发，比如用户的登录状态、数据列表的缓存，传统类型的MVC设计模式中，后端语言（Java、PHP……）中，浏览器发起url请求，后端根据请求的路径和参数，后端对数据进行处理（从数据库中拿出数据、请求第三方接口等……），然后进行页面数据填充后返回完整的HTML数据，浏览器拿到这些html元素后进行页面渲染。</p>
+<p>单页应用模式的区别在于请求进行接口化，开发过Android或者iOS的应该知道，客户端处理数据状态，操作UI控件，与后端进行网络通信获取数据通信。单页应用的开发就是基于这种模式，那么处理数据状态的任务就落到前端的头上来了，react提供视图渲染的优化，但是数据的状态管理就成了一个问题，比如用户的数据，交由那个组件去控制，怎么进行交互，这就成了一个问题。Facebook提出了Flux设计模型来解决这个问题，用store来存放数据源，通过action、reducer来操作数据，来保证数据的单一性。</p>
+<p>但是Facebook只是提出了这一种设计思想，没有开发相应的框架，于是就诞生了很多第三方实现，Redux就是其中一种，它不是完全采用Flux规范模式，它提出了自己的设计思想，Redux也就成了和React搭配的优秀的状态工具。</p>
+<h1 id="项目生成"><a href="#项目生成" class="headerlink" title="项目生成"></a>项目生成</h1><p>代码生成工具使用Yeoman，Yeoman是一个代码generators工具，它提供很多第三方generators，通过它，我们可以很方便的构建一个初始化项目，<a href="http://yeoman.io/" target="_blank" rel="noopener">点击访问Yeoman</a></p>
+<p>项目使用react+redux构建，所以这里选择<code>generator-redux-stack</code>来作为生成模板。终端下使用如下命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">安装yeoman</span></span><br><span class="line">npm install yo -g </span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">安装generators</span></span><br><span class="line">npm install -g generator-redux-stack</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">创建目录并进入</span></span><br><span class="line">mkdir [xxx] &amp;&amp; cd [xxx]</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">使用yo创建项目框架</span></span><br><span class="line">yo redux-stack</span><br></pre></td></tr></table></figure>
+<p>执行完成后会看到下图<br><img src="//odujw1uur.qnssl.com/yo.png" alt="yo"></p>
+<p>填写相应的项目描述信息，Yeoman会自动创建文件，并且安装依赖</p>
+<p><img src="//odujw1uur.qnssl.com/npm.png" alt="npm"></p>
+<p>如果网络较慢可以<code>Ctrl+C</code>停止安装，使用cnpm国内镜像安装(#滑稽)。</p>
+<p><img src="//odujw1uur.qnssl.com/cnpm.png" alt="cnpm"></p>
+<p>稍等一会出现如下界面就说明完成了</p>
+<p><img src="//odujw1uur.qnssl.com/finash.png" alt="finash"></p>
+<p>在终端输入</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm start</span><br></pre></td></tr></table></figure>
+<p>浏览器端打开<code>http://localhost:3000</code>可以看到生成器提供的模板</p>
+<p><img src="//odujw1uur.qnssl.com/web.png" alt="web"></p>
+<p>好了，接下来就可以开始编码了。：）</p>
+<h1 id="目录介绍"><a href="#目录介绍" class="headerlink" title="目录介绍"></a>目录介绍</h1><p><img src="//odujw1uur.qnssl.com/file.png" alt="file"></p>
+<blockquote>
+<p>目录结构由<code>redux-stack</code>控制</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>目录名</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>build</td>
+<td align="left">项目主html文件存放位置</td>
+</tr>
+<tr>
+<td>dist</td>
+<td align="left">项目编译目录位置</td>
+</tr>
+<tr>
+<td>node_modules</td>
+<td align="left">npm包存放位置</td>
+</tr>
+<tr>
+<td>server</td>
+<td align="left">项目运行时服务器环境</td>
+</tr>
+<tr>
+<td>src</td>
+<td align="left">项目源码目录，代码主要存放位置</td>
+</tr>
+<tr>
+<td>—-actions</td>
+<td align="left">redux action存放目录</td>
+</tr>
+<tr>
+<td>—-components</td>
+<td align="left">react组件存放目录</td>
+</tr>
+<tr>
+<td>—-config</td>
+<td align="left">react-router主要配置文件</td>
+</tr>
+<tr>
+<td>—-container</td>
+<td align="left">react页面(组件拼贴)存放位置</td>
+</tr>
+<tr>
+<td>—-reducers</td>
+<td align="left">redux reducer存放位置</td>
+</tr>
+<tr>
+<td>—-store</td>
+<td align="left">redux store定义存放位置</td>
+</tr>
+<tr>
+<td>—-style</td>
+<td align="left">样式文件存放位置</td>
+</tr>
+<tr>
+<td>—-utils</td>
+<td align="left">开发调试工具配置</td>
+</tr>
+<tr>
+<td>test</td>
+<td align="left">测试脚本存放目录</td>
+</tr>
+</tbody></table>
+<h1 id="编写代码"><a href="#编写代码" class="headerlink" title="编写代码"></a>编写代码</h1><h2 id="编写jsx页面"><a href="#编写jsx页面" class="headerlink" title="编写jsx页面"></a>编写jsx页面</h2><p>在<code>container</code>目录新创建一个<code>Home.js</code>文件</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/containers/Home.js</span></span><br><span class="line"><span class="keyword">import</span> React, &#123; Component &#125; <span class="keyword">from</span> <span class="string">'react'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="class"><span class="keyword">class</span> <span class="title">Home</span> <span class="keyword">extends</span> <span class="title">Component</span> </span>&#123;</span><br><span class="line">  render () &#123;</span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">      &lt;div&gt;</span><br><span class="line">        这是主页</span><br><span class="line">      &lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">    )</span></span><br><span class="line"><span class="regexp">  &#125;</span></span><br><span class="line"><span class="regexp">&#125;</span></span><br></pre></td></tr></table></figure>
+<p>这里创建了一个组件，组件渲染了一个<code>div</code>标签，里面是一行文字。<code>render</code>使用了jsx的语法糖。</p>
+<h2 id="编写路由"><a href="#编写路由" class="headerlink" title="编写路由"></a>编写路由</h2><p>修改<code>config</code>目录下面的<code>routes.js</code>文件，需要引入Home组件，并且将其挂载到根节点。</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/config/routes.js</span></span><br><span class="line"><span class="keyword">import</span> Home <span class="keyword">from</span> <span class="string">'../containers/Home.js'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> (</span><br><span class="line">  &lt;Route path=<span class="string">"/"</span> component=&#123;Home&#125; /&gt;</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<p>刷新路由器可以看到页面的更改</p>
+<h2 id="编写action"><a href="#编写action" class="headerlink" title="编写action"></a>编写action</h2><p>在<code>src/actioins</code>目录下面创建<code>one.js</code>文件，这里面将会定义数据操作类型与一些actions方法。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// actions/one.js</span></span><br><span class="line"><span class="keyword">import</span> <span class="string">'whatwg-fetch'</span>;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> UPDATE_ONE = <span class="string">'update_one'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">update</span>(<span class="params">_data</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> &#123;</span><br><span class="line">    type: UPDATE_ONE,</span><br><span class="line">    data: _data</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">getone</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="params">dispatch</span> =&gt;</span> &#123;</span><br><span class="line">    fetch(<span class="string">'http://v3.wufazhuce.com:8000/api/hp/bymonth/2016-09'</span>)</span><br><span class="line">      .then(<span class="function">(<span class="params">response</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(response)</span><br><span class="line">      &#125;)</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里我们需要安装<code>fetch</code>来进行异步网络请求，当然你也可以使用其他网络请求工具。通过以下命令安装<code>fetch</code></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install whatwg-fetch --save</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>接口使用<a href="https://github.com/dodola/WeexOne" target="_blank" rel="noopener">WeexOne</a>项目里面的接口</p>
+</blockquote>
+<h2 id="编写reducer"><a href="#编写reducer" class="headerlink" title="编写reducer"></a>编写reducer</h2><p><code>redux-stack</code>这个生成器自动帮我们做好了reducer到store的绑定，所以我们只需要将注意力放在reducer中就可以了。</p>
+<p>在<code>src/reducers</code>目录下新建<code>one.js</code>文件，这里我们将放置一些常用的数据操作。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// reducers/one.js</span></span><br><span class="line"><span class="keyword">import</span> &#123; createReducer &#125; <span class="keyword">from</span> <span class="string">'redux-create-reducer'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; UPDATE_ONE &#125; <span class="keyword">from</span> <span class="string">'../actions/one'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> initialState = &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> createReducer(initialState, &#123;</span><br><span class="line">  [UPDATE_ONE](state, data) &#123;</span><br><span class="line">    <span class="keyword">return</span> data.data;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>并在<code>reducers/index.js</code>文件中注册store</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// reducersindex.js</span></span><br><span class="line">......</span><br><span class="line"><span class="keyword">import</span> one <span class="keyword">from</span> <span class="string">'./one'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> rootReducer = combineReducers(&#123;</span><br><span class="line">  ......</span><br><span class="line">  one,</span><br><span class="line">  ......</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> rootReducer;</span><br></pre></td></tr></table></figure>
+
+<h2 id="绑定store和actions到组件"><a href="#绑定store和actions到组件" class="headerlink" title="绑定store和actions到组件"></a>绑定store和actions到组件</h2><p>这里我们需要修改开始创建的<code>Home.js</code>组件。</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> React, &#123; Component &#125; <span class="keyword">from</span> <span class="string">'react'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; bindActionCreators &#125; <span class="keyword">from</span> <span class="string">'redux'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; connect &#125; <span class="keyword">from</span> <span class="string">'react-redux'</span>;</span><br><span class="line"><span class="keyword">import</span> * <span class="keyword">as</span> OneActions <span class="keyword">from</span> <span class="string">'../actions/one'</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Home</span> <span class="keyword">extends</span> <span class="title">Component</span> </span>&#123;</span><br><span class="line">  componentWillMount() &#123;</span><br><span class="line">    <span class="keyword">this</span>.props.getone() <span class="comment">//发起action操作</span></span><br><span class="line">  &#125;</span><br><span class="line">  render() &#123;</span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">      &lt;div&gt;</span><br><span class="line">        这是主页</span><br><span class="line">      &lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">    )</span></span><br><span class="line"><span class="regexp">  &#125;</span></span><br><span class="line"><span class="regexp">&#125;</span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp">/</span>* 映射store中的state到组件中 *<span class="regexp">/</span></span><br><span class="line"><span class="regexp">function mapStateToProps(state) &#123;</span></span><br><span class="line"><span class="regexp">  return &#123;</span></span><br><span class="line"><span class="regexp">    one: state.one</span></span><br><span class="line"><span class="regexp">  &#125;;</span></span><br><span class="line"><span class="regexp">&#125;</span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp">/</span>* 映射actions到组件中，并且注入dispatch方法 *<span class="regexp">/</span></span><br><span class="line"><span class="regexp">function mapDispatchToProps(dispatch) &#123;</span></span><br><span class="line"><span class="regexp">  return bindActionCreators(OneActions, dispatch);</span></span><br><span class="line"><span class="regexp">&#125;</span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp">/</span>* 修改组件导出方式，导出调用connect方法生成后的新组件*<span class="regexp">/</span></span><br><span class="line"><span class="regexp">export default connect(mapStateToProps, mapDispatchToProps)(Home);</span></span><br></pre></td></tr></table></figure>
+<p>这里注入的state与actions都可以通过<code>this.props</code>访问到。这时打开浏览器可以看到我们在<code>one action</code>中的<code>getone</code>方法打印出的异步请求数据<br><img src="//odujw1uur.qnssl.com/response.png" alt="response"></p>
+<h2 id="将异步数据写入到state"><a href="#将异步数据写入到state" class="headerlink" title="将异步数据写入到state"></a>将异步数据写入到state</h2><p>修改<code>actions</code>当中的<code>one.js</code>，在拿到数据后dispatch到reducer处理</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// actions/one.js</span></span><br><span class="line"><span class="keyword">import</span> <span class="string">'whatwg-fetch'</span>;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> UPDATE_ONE = <span class="string">'update_one'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">update</span>(<span class="params">_data</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> &#123;</span><br><span class="line">    type: UPDATE_ONE,</span><br><span class="line">    data: _data</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">getone</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="params">dispatch</span> =&gt;</span> &#123;</span><br><span class="line">    fetch(<span class="string">'http://v3.wufazhuce.com:8000/api/hp/bymonth/2016-09'</span>).then(<span class="function">(<span class="params">response</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(response)</span><br><span class="line">        <span class="keyword">return</span> response.json()</span><br><span class="line">      &#125;).then(<span class="function">(<span class="params">data</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="comment">/** 返回的json格式为</span></span><br><span class="line"><span class="comment">        &#123;</span></span><br><span class="line"><span class="comment">          res: 0,</span></span><br><span class="line"><span class="comment">          data: [...]</span></span><br><span class="line"><span class="comment">        &#125;</span></span><br><span class="line"><span class="comment">        */</span></span><br><span class="line">        dispatch(update(data.data[<span class="number">0</span>]))</span><br><span class="line">      &#125;)</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>由于<code>fetch</code>库提供<code>Promise</code>的支持，所以可以使用then结构。</p>
+<p>在redux开发工具中我们可以看到如下显示</p>
+<p><img src="//odujw1uur.qnssl.com/reduxtool.png" alt="reduxtool"></p>
+<p>在末尾处可以看到<code>state</code>中的one已经有数据了，接下来我们将数据绑定到界面组件。</p>
+<h2 id="绑定store中的state数据到react组件"><a href="#绑定store中的state数据到react组件" class="headerlink" title="绑定store中的state数据到react组件"></a>绑定store中的state数据到react组件</h2><p>回到还是创建的<code>Home.js</code>组件中，我们将需要的数据绑定到界面中</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">......</span><br><span class="line">  render() &#123;</span><br><span class="line">    <span class="keyword">const</span> &#123; one &#125; = <span class="keyword">this</span>.props</span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">      &lt;div&gt;</span><br><span class="line">        &lt;h2&gt;&#123;one.hp_content&#125;&lt;<span class="regexp">/h2&gt;</span></span><br><span class="line"><span class="regexp">        &lt;hr/</span>&gt;</span><br><span class="line">        &lt;p&gt;&#123;one.hp_author&#125;&lt;<span class="regexp">/p&gt;</span></span><br><span class="line"><span class="regexp">        &lt;img src=&#123;one.hp_img_url&#125;&gt;&lt;/img</span>&gt;</span><br><span class="line">      &lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">    )</span></span><br><span class="line"><span class="regexp">  &#125;</span></span><br><span class="line"><span class="regexp">......</span></span><br></pre></td></tr></table></figure>
+<p>这是浏览器里面的页面已经有数据了</p>
+<p><img src="//odujw1uur.qnssl.com/perview.png" alt="perview"></p>
+<p>经过一些简单的css样式调整得到的效果如下</p>
+<p><img src="//odujw1uur.qnssl.com/one.png" alt="one"></p>
+<h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><p>这篇文章讲述了react搭配redux的基础用法，关于<code>react-router</code>的部分本文没有详细讲解，但是react-router的难度也不大，上手也很快。如果需要使用<code>webpack ensure</code>按需加载，需要将组建导出格式换成<code>CommonJS</code>规范导出</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">module</span>.exports = React.createClass(&#123;</span><br><span class="line">  render() &#123;</span><br><span class="line">    &lt;div&gt;示例页面&lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">  &#125;</span></span><br><span class="line"><span class="regexp">&#125;)</span></span><br></pre></td></tr></table></figure>
+<p>详细可以参考<a href="https://github.com/ReactTraining/react-router/tree/master/examples/auth-with-shared-root" target="_blank" rel="noopener">react-router示例程序</a></p>
+
+      </article>
+    </div>
+    <div class="toc_container hidden">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#什么是React？"><span class="toc-number">1.</span> <span class="toc-text">什么是React？</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#什么是Redux？"><span class="toc-number">2.</span> <span class="toc-text">什么是Redux？</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#项目生成"><span class="toc-number">3.</span> <span class="toc-text">项目生成</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#目录介绍"><span class="toc-number">4.</span> <span class="toc-text">目录介绍</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#编写代码"><span class="toc-number">5.</span> <span class="toc-text">编写代码</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#编写jsx页面"><span class="toc-number">5.1.</span> <span class="toc-text">编写jsx页面</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#编写路由"><span class="toc-number">5.2.</span> <span class="toc-text">编写路由</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#编写action"><span class="toc-number">5.3.</span> <span class="toc-text">编写action</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#编写reducer"><span class="toc-number">5.4.</span> <span class="toc-text">编写reducer</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#绑定store和actions到组件"><span class="toc-number">5.5.</span> <span class="toc-text">绑定store和actions到组件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#将异步数据写入到state"><span class="toc-number">5.6.</span> <span class="toc-text">将异步数据写入到state</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#绑定store中的state数据到react组件"><span class="toc-number">5.7.</span> <span class="toc-text">绑定store中的state数据到react组件</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#结语"><span class="toc-number">6.</span> <span class="toc-text">结语</span></a></li></ol>
+    </div>
+  </div>
+  
+  
+  <div id="disqus_thread"></div>
+  <script>
+
+  /**
+  *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+  *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+  /*
+  var disqus_config = function () {
+  this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+  this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+  };
+  */
+  (function() { // DON'T EDIT BELOW THIS LINE
+  var d = document, s = d.createElement('script');
+  s.src = 'https://blog-yvhcy5cqnn.disqus.com/embed.js';
+  s.setAttribute('data-timestamp', +new Date());
+  (d.head || d.body).appendChild(s);
+  })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+  
+</div>
+
+  </div>
+  
+  <div class="copyright">
+      Power by <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a>
+  </div>
+  
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.11/lodash.min.js"></script>
+  <script src="/script/navs.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/css-doodle/0.4.9/css-doodle.min.js"></script>  
+  
+  <script src="/script/post.js"></script>
+  
+  
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?22665402e8fbc52fef714cbfbfbec3e0";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+    </script>
+  
+</body>
+</html>
